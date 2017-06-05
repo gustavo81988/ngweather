@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { WeatherService } from './weather.service';
+import {WeatherItem} from './weather-item';
 
 @Component({
   selector: 'weather-search',
@@ -6,7 +8,7 @@ import { Component } from '@angular/core';
    <section class="weather-search">
       <form (ngSubmit)="onSubmit(f)"  #f="ngForm">
         <label for="city">City</label>
-        <input type="text" id="city" required>
+        <input type="text" ngModel id="city" name="location" required>
         <button type="submit">Add City</button>
       </form>
       <div>
@@ -27,10 +29,19 @@ import { Component } from '@angular/core';
     button:hover {
       background-color: #27ae60;
     }
-  `]
+  `],
+  providers: [WeatherService]
 })
 export class WeatherSearchComponent{
+
+  constructor(private weatherService: WeatherService){}
+
   onSubmit(form){
-    console.log(form);
+    this.weatherService.searchWeather(form.value.location).subscribe(
+      data => {
+        const weatherItem = new WeatherItem(data.name,data.weather[0].description, data.main.temp);
+        this.weatherService.addWeatherItem(weatherItem);
+      }
+    );
   }
 }
