@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WeatherService } from './weather.service';
 import {WeatherItem} from './weather-item';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'weather-search',
@@ -8,11 +9,11 @@ import {WeatherItem} from './weather-item';
    <section class="weather-search">
       <form (ngSubmit)="onSubmit(f)"  #f="ngForm">
         <label for="city">City</label>
-        <input type="text" ngModel id="city" name="location" required>
+        <input type="text" ngModel id="city" name="location" required autocomplete=off (input)="onSearchLocation(input.value)" #input>
         <button type="submit">Add City</button>
       </form>
       <div>
-        <span class="info">City Found:</span> City Name
+        <span class="info">City Found:</span> {{data.name}}
       </div>
    </section>
   `,
@@ -32,16 +33,34 @@ import {WeatherItem} from './weather-item';
   `],
   providers: [WeatherService]
 })
-export class WeatherSearchComponent{
+export class WeatherSearchComponent implements OnInit{
+  private searchStream = new Subject<string>();
+  public  data: any = {};
 
   constructor(private weatherService: WeatherService){}
-
-  onSubmit(form){
+  
+  public onSubmit(form):void {
     this.weatherService.searchWeather(form.value.location).subscribe(
       data => {
         const weatherItem = new WeatherItem(data.name,data.weather[0].description, data.main.temp);
         this.weatherService.addWeatherItem(weatherItem);
       }
     );
+  }
+
+  public onSearchLocation(cityName: string){
+    this.searchStream.next(cityName);
+  }
+
+  ngOnInit(){
+    this.searchStream
+    .debounceTime(300)
+    .distinctUntilChanged()
+    .switchMap(
+      (input:string) => this.weatherService.searchWeather(input)
+    )
+    .subscribe(
+      data => this.data = data
+    );  
   }
 }
