@@ -11,6 +11,7 @@ import {Subject} from 'rxjs/Subject';
         <label for="city">City</label>
         <input type="text" ngModel id="city" name="location" required autocomplete=off (input)="onSearchLocation(input.value)" #input>
         <button type="submit">Add City</button>
+        <button type="button" (click)="clearWeatherData()">Clear</button>
       </form>
       <div>
         <span class="info">City Found:</span> {{data.name}}
@@ -52,6 +53,10 @@ export class WeatherSearchComponent implements OnInit{
     if(cityName.length > 0){
       this.searchStream.next(cityName);
     }
+  }
+
+  public clearWeatherData(){
+    this.weatherService.clearWeatherItems();
   }
 
   ngOnInit(){
