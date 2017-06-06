@@ -17,6 +17,10 @@ export class WeatherService {
   addWeatherItem(weatherItem: WeatherItem){
     WEATHER_ITEMS.push(weatherItem);
   }
+  
+  clearWeatherItems(){
+    WEATHER_ITEMS.splice(0);
+  }
 
   searchWeather(cityName: string){
       

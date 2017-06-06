@@ -1,3 +1,3 @@
 export class Profile{
-    constructor(public profileName: string, cities: string){};
+    constructor(public profileName: string, public cities: string[]){};
 }

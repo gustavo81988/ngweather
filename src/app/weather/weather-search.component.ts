@@ -49,7 +49,9 @@ export class WeatherSearchComponent implements OnInit{
   }
 
   public onSearchLocation(cityName: string){
-    this.searchStream.next(cityName);
+    if(cityName.length > 0){
+      this.searchStream.next(cityName);
+    }
   }
 
   ngOnInit(){
