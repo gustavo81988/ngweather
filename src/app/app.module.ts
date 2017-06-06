@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { WeatherItemComponent } from './weather/weather-item.component';
 import { WeatherListComponent } from './weather/weather-list.component';
 import { WeatherSearchComponent } from './weather/weather-search.component';
+import { SidebarComponent } from './sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherItemComponent,
     WeatherListComponent,
-    WeatherSearchComponent
+    WeatherSearchComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

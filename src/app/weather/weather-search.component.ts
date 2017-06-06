@@ -19,7 +19,7 @@ import {Subject} from 'rxjs/Subject';
   `,
   styles: [`
     button {
-      background-color: #2ecc71;
+      background-color: #239954;
       border: none;
       padding: 4px 8px;
       box-shadow: 1px 1px 1px #95a5a6;
